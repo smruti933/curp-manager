@@ -7,11 +7,11 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.0.2.RELEASE</version>
 	</parent>
-	<groupId>com.crupbio</groupId>
-	<artifactId>crupBioManager</artifactId>
+	<groupId>com.curpbio</groupId>
+	<artifactId>curpBioManager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>crupBioManager</name>
-	<description>project for crupbio</description>
+	<name>curpBioManager</name>
+	<description>project for curpbio</description>
 	<properties>
 		<!-- maven -->
 		<java.version>11</java.version>

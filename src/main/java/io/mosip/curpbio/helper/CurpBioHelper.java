@@ -17,12 +17,12 @@ public class CurpBioHelper {
     private CurpService curpService;
 
     @Autowired
-    private MatchedCurpService matchedCrupService;
+    private MatchedCurpService matchedCurpService;
 
     public String updateCurpBioDataStatus(MatchedCurpDto matchedCurpDto) {
        CurpBioData curpBioData = curpService.findCurpBioDataById(matchedCurpDto.getCurpId());
         LOGGER.info("Updating CurpBioData for curpId: " + matchedCurpDto.getCurpId());
-            curpBioData.setCurpStatus(matchedCurpDto.getCrupStatus());
+            curpBioData.setCurpStatus(matchedCurpDto.getCurpStatus());
             curpBioData.setStatusComment(matchedCurpDto.getStatusComment());
             curpBioData.setUpdDtimes(DateUtils.getUTCCurrentDateTime());
 
@@ -30,15 +30,15 @@ public class CurpBioHelper {
             if (!updateResponse.equals("CurpBioData updated successfully")) {
                 return updateResponse;
             }
-            MatchedCurp matchedCurp = matchedCrupService.findCurpId(matchedCurpDto.getCurpId());
-            MatchedCurp matchedCurpId = matchedCrupService.findMatchedCurpId(matchedCurpDto.getMatchedCurpIds());
+            MatchedCurp matchedCurp = matchedCurpService.findCurpId(matchedCurpDto.getCurpId());
+            MatchedCurp matchedCurpId = matchedCurpService.findMatchedCurpId(matchedCurpDto.getMatchedCurpIds());
             if(matchedCurpId!=null){
                 LOGGER.info("matched curpId is already exists"+matchedCurpId.getMatchedCurpIds());
             }
         else if (matchedCurp != null) {
                 String updatedMatchedCurpIds = matchedCurp.getMatchedCurpIds() + "," + matchedCurpDto.getMatchedCurpIds();
                 matchedCurp.setMatchedCurpIds(updatedMatchedCurpIds);
-                String matchedUpdateResponse = matchedCrupService.updateMatchedCurp(matchedCurp);
+                String matchedUpdateResponse = matchedCurpService.updateMatchedCurp(matchedCurp);
                 if (!matchedUpdateResponse.equals("MatchedCurp updated successfully")) {
                     return matchedUpdateResponse;
                 }
@@ -51,7 +51,7 @@ public class CurpBioHelper {
                 newMatchedCurp.setCreatedBy("TEST_USER");
                 newMatchedCurp.setCreatedDateTime(DateUtils.getUTCCurrentDateTime());
 
-                String matchedSaveResponse = matchedCrupService.saveMatchedCurp(newMatchedCurp);
+                String matchedSaveResponse = matchedCurpService.saveMatchedCurp(newMatchedCurp);
                 if (!matchedSaveResponse.equals("MatchedCurp saved successfully")) {
                     return matchedSaveResponse;
                 }

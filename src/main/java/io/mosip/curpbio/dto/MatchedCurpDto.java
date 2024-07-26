@@ -12,5 +12,5 @@ public class MatchedCurpDto {
     private String matchedCurpIds;
     private String statusCode;
     private String statusComment;
-    private String crupStatus;
+    private String curpStatus;
 }
