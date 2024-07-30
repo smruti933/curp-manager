@@ -78,9 +78,8 @@ ENV regproc_jars_env=${regproc_jars}
 # change volume to whichever storage directory you want to use for this container.
 VOLUME /home/logs /home/ftp1/ARCHIVE_PACKET_LOCATION /home/ftp1/LANDING_ZONE
 
-ENV group_name=curp-manager-service
 
-ADD ./target/${group_name}-*.jar ${group_name}.jar
+COPY ./target/curp-manager-service-*.jar curp-manager-service.jar
 
 # change permissions of file inside working dir
 RUN chown -R ${container_user}:${container_user} /home/${container_user}
@@ -96,9 +95,9 @@ CMD if [ "$is_glowroot_env" = "present" ]; then \
     unzip glowroot.zip ; \
     rm -rf glowroot.zip ; \
     sed -i 's/<service_name>/kernel-auditmanager-service/g' glowroot/glowroot.properties ; \
-    java -jar -Dloader.path="${loader_path_env}" -Dspring.cloud.config.label="${spring_config_label_env}" -Dspring.profiles.active="${active_profile_env}" -Dspring.cloud.config.uri="${spring_config_url_env}"  -javaagent:glowroot/glowroot.jar ${group_name}.jar ; \
+    java -jar -Dloader.path="${loader_path_env}" -Dspring.cloud.config.label="${spring_config_label_env}" -Dspring.profiles.active="${active_profile_env}" -Dspring.cloud.config.uri="${spring_config_url_env}"  -javaagent:glowroot/glowroot.jar curp-manager-service.jar ; \
     else \
     wget "${iam_adapter_url_env}" -O "${loader_path_env}"/kernel-auth-adapter.jar; \
     wget --no-parent "${artifactory_url_env}"/"${regproc_jars_env}" --directory-prefix "${loader_path_env}"/ ; \
-    java -jar -Dloader.path="${loader_path_env}" -Dspring.cloud.config.label="${spring_config_label_env}" -Dspring.profiles.active="${active_profile_env}" -Dspring.cloud.config.uri="${spring_config_url_env}" ${group_name}.jar ; \
+    java -jar -Dloader.path="${loader_path_env}" -Dspring.cloud.config.label="${spring_config_label_env}" -Dspring.profiles.active="${active_profile_env}" -Dspring.cloud.config.uri="${spring_config_url_env}" curp-manager-service.jar ; \
     fi
