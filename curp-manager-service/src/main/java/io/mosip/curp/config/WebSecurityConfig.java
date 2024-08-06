@@ -1,4 +1,4 @@
-package io.mosip.curp.cofig;
+package io.mosip.curp.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

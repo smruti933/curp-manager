@@ -2,7 +2,7 @@ package io.mosip.curp.service;
 
 
 import io.mosip.curp.entity.CurpBioData;
-import io.mosip.curp.repositary.CurpBioDataRepository;
+import io.mosip.curp.repository.CurpBioDataRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
