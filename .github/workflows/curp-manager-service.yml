@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NAMESPACE: ${{ secrets. dev_namespace_docker_hub  }}
-      SERVICE_NAME: curp-manager
-      SERVICE_LOCATION: curp-manager-service
+      SERVICE_NAME: curp-manager-service
+      SERVICE_LOCATION: ./curp-manager-service
 
     steps:
       - uses: actions/checkout@v2
