@@ -1,7 +1,7 @@
 package io.mosip.curp.service;
 
 import io.mosip.curp.entity.MatchedCurp;
-import io.mosip.curp.repositary.MatchedCurpRepository;
+import io.mosip.curp.repository.MatchedCurpRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;

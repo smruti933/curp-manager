@@ -1,4 +1,4 @@
-package io.mosip.curp.repositary;
+package io.mosip.curp.repository;
 
 import io.mosip.curp.entity.CurpBioData;
 import org.springframework.data.jpa.repository.JpaRepository;
