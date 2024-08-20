@@ -72,7 +72,7 @@ RUN mkdir -p ${loader_path}
 
 ENV loader_path_env=${loader_path}
 
-COPY ./target/curp-manager-service-*.jar curp-manager-service.jar
+COPY curp-manager-service/target/curp-manager-service-*.jar curp-manager-service.jar
 
 # change permissions of file inside working dir
 RUN chown -R ${container_user}:${container_user} /home/${container_user}
