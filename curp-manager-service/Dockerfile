@@ -77,7 +77,7 @@ ENV loader_path_env=${loader_path}
 # change volume to whichever storage directory you want to use for this container.
 VOLUME ${work_dir}/logs ${work_dir}/Glowroot
 
-RUN pwd && ls
+RUN pwd && ls -ltr
 
 RUN ${is_glowroot_env}
 
@@ -88,6 +88,8 @@ RUN chown -R ${container_user}:${container_user} /home/${container_user}
 
 # select container user for all tasks
 USER ${container_user_uid}:${container_user_gid}
+
+RUN pwd && ls -ltr
 
 EXPOSE 8099
 
