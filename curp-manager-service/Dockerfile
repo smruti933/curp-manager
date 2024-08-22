@@ -80,13 +80,8 @@ ENV loader_path_env=${loader_path}
 VOLUME ${work_dir}/logs ${work_dir}/Glowroot
 
 RUN pwd && ls -ltr
-<<<<<<< Updated upstream
-
-RUN ${is_glowroot_env}
 
 COPY curp-manager-service-*.jar curp-manager-service.jar
-=======
->>>>>>> Stashed changes
 
 ADD ./target/*.jar /target/
 RUN find /target -name '*.jar' -executable -type f "-curp0" | xargs "-0" cp -t / \
