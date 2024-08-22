@@ -79,7 +79,9 @@ VOLUME ${work_dir}/logs ${work_dir}/Glowroot
 
 RUN pwd && ls
 
-COPY curp-manager-service-*.jar ../curp-manager-service.jar
+RUN ${is_glowroot_env}
+
+COPY curp-manager-service-*.jar curp-manager-service.jar
 
 # change permissions of file inside working dir
 RUN chown -R ${container_user}:${container_user} /home/${container_user}
