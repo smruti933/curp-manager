@@ -62,7 +62,7 @@ RUN apt-get -y update \
 && apt-get install -y unzip sudo \
 && groupadd -g ${container_user_gid} ${container_user_group} \
 && useradd -u ${container_user_uid} -g ${container_user_group} -s /bin/sh -m ${container_user} \
-&& adduser ${container_user}
+&& adduser ${container_user} sudo
 
 # set working directory for the user
 WORKDIR /home/${container_user}
