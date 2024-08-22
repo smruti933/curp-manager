@@ -59,9 +59,11 @@ ENV iam_adapter_url_env=${iam_adapter_url}
 
 # install packages and create user
 RUN apt-get -y update \
-&& apt-get install -y unzip \
+&& apt-get install -y unzip sudo \
 && groupadd -g ${container_user_gid} ${container_user_group} \
-&& useradd -u ${container_user_uid} -g ${container_user_group} -s /bin/sh -m ${container_user}
+&& useradd -u ${container_user_uid} -g ${container_user_group} -s /bin/sh -m ${container_user} \
+&& adduser ${container_user} sudo \
+&& echo "%sudo ALL=(ALL) NOPASSWD:/home/${container_user}/${hsm_local_dir}/install.sh" >> /etc/sudoers
 
 # set working directory for the user
 WORKDIR /home/${container_user}
@@ -78,11 +80,19 @@ ENV loader_path_env=${loader_path}
 VOLUME ${work_dir}/logs ${work_dir}/Glowroot
 
 RUN pwd && ls -ltr
+<<<<<<< Updated upstream
 
 RUN ${is_glowroot_env}
 
 COPY curp-manager-service-*.jar curp-manager-service.jar
+=======
+>>>>>>> Stashed changes
 
+ADD ./target/*.jar /target/
+RUN find /target -name '*.jar' -executable -type f "-curp0" | xargs "-0" cp -t / \
+    && rm -rf /target \
+    && mv /*.jar ${work_dir}/curp-manager-service.jar
+    
 # change permissions of file inside working dir
 RUN chown -R ${container_user}:${container_user} /home/${container_user}
 
