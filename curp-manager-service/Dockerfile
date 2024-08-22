@@ -62,8 +62,7 @@ RUN apt-get -y update \
 && apt-get install -y unzip sudo \
 && groupadd -g ${container_user_gid} ${container_user_group} \
 && useradd -u ${container_user_uid} -g ${container_user_group} -s /bin/sh -m ${container_user} \
-&& adduser ${container_user} sudo \
-&& echo "%sudo ALL=(ALL) NOPASSWD:/home/${container_user}/${hsm_local_dir}/install.sh" >> /etc/sudoers
+&& adduser ${container_user}
 
 # set working directory for the user
 WORKDIR /home/${container_user}
@@ -81,10 +80,8 @@ VOLUME ${work_dir}/logs ${work_dir}/Glowroot
 
 RUN pwd && ls -ltr
 
-COPY curp-manager-service-*.jar curp-manager-service.jar
-
 ADD ./target/*.jar /target/
-RUN find /target -name '*.jar' -executable -type f "-curp0" | xargs "-0" cp -t / \
+RUN find /target -name '*.jar' -executable -type f "-print0" | xargs "-0" cp -t / \
     && rm -rf /target \
     && mv /*.jar ${work_dir}/curp-manager-service.jar
     
