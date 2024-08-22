@@ -77,7 +77,6 @@ ENV loader_path_env=${loader_path}
 # change volume to whichever storage directory you want to use for this container.
 VOLUME ${work_dir}/logs ${work_dir}/Glowroot
 
-RUN ${work_dir}
 RUN pwd && ls
 
 COPY curp-manager-service-*.jar curp-manager-service.jar
