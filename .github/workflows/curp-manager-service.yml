@@ -9,7 +9,7 @@ jobs:
     env:
       NAMESPACE: ${{ secrets. dev_namespace_docker_hub  }}
       SERVICE_NAME: curp-manager-service
-      SERVICE_LOCATION: curp-manager-service
+      SERVICE_LOCATION: ./curp-manager-service
 
     steps:
       - uses: actions/checkout@v2
@@ -46,14 +46,14 @@ jobs:
 
       - name: Build with Maven
         run: |
-          cd ./curp-manager-service
+          cd ${{env.SERVICE_LOCATION}}
           mvn clean install -U -s $GITHUB_WORKSPACE/settings.xml -DskipTests -Dgpg.skip=true --file pom.xml
       - name: Removing target jars
         run: |
           rm -rf $(find -name '*.jar' ! -executable -type f)
       - name: Build image
         run: |
-          echo ${{env.SERVICE_LOCATION}}
+          cd ${{env.SERVICE_LOCATION}}
           pwd && ls
           docker build . --file Dockerfile --tag ${{ env.SERVICE_NAME }}
       - name: Log into registry
