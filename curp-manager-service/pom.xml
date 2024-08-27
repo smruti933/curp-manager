@@ -92,11 +92,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>io.mosip.kernel</groupId>
-			<artifactId>kernel-auth-adapter</artifactId>
-			<version>1.2.0.1</version>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.modelmapper</groupId>
