@@ -18,13 +18,20 @@ public class CurpBioController {
     private CurpBioHelper curpBioHelper;
 
     @PostMapping("/updatematch")
-    public ResponseEntity<String> updateCurpBioDataStatus(@RequestBody @Valid MatchedCurpDto matchedCurpDto) {
-        String response = curpBioHelper.updateCurpBioDataStatus(matchedCurpDto);
+    public ResponseEntity<String> updateCurpBioData(@RequestBody @Valid MatchedCurpDto matchedCurpDto) {
+        String response = curpBioHelper.updateCurpBioData(matchedCurpDto);
         if (response.equals("CurpBioData and MatchedCurp updated successfully")) {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/process-curp/{curpId}/{curpType}")
+    public String updateCurpStatus(
+            @PathVariable("curpId") String curpId,
+            @PathVariable("curpType") String curpType) {
+        return curpBioHelper.findAndUpdateCurpStatus(curpId, curpType);
     }
 
 }
