@@ -8,7 +8,10 @@ import io.mosip.kernel.core.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @Component
@@ -21,43 +24,46 @@ public class CurpBioHelper {
     private MatchedCurpService matchedCurpService;
 
     public String updateCurpBioData(MatchedCurpDto matchedCurpDto) {
-       CurpBioData curpBioData = curpService.findCurpBioDataById(matchedCurpDto.getCurpId());
+        CurpBioData curpBioData = curpService.findCurpBioDataById(matchedCurpDto.getCurpId());
         LOGGER.info("Updating CurpBioData for curpId: " + matchedCurpDto.getCurpId());
-            curpBioData.setCurpStatus(matchedCurpDto.getCurpStatus());
-            curpBioData.setStatusComment(matchedCurpDto.getStatusComment());
-            curpBioData.setUpdDtimes(DateUtils.getUTCCurrentDateTime());
+        curpBioData.setCurpStatus(matchedCurpDto.getCurpStatus());
+        curpBioData.setStatusComment(matchedCurpDto.getStatusComment());
+        curpBioData.setUpdDtimes(DateUtils.getUTCCurrentDateTime());
 
-            String updateResponse = curpService.updateCurpBioData(curpBioData);
-            if (!updateResponse.equals("CurpBioData updated successfully")) {
-                return updateResponse;
+        String updateResponse = curpService.updateCurpBioData(curpBioData);
+        if (!updateResponse.equals("CurpBioData updated successfully")) {
+            return updateResponse;
+        }
+        MatchedCurp matchedCurp = matchedCurpService.findCurpId(matchedCurpDto.getCurpId());
+        if (matchedCurp != null) {
+            Set<String> existingMatchedCurpIds = new HashSet<>(matchedCurp.getMatchedCurpIds());
+            Set<String> newMatchedCurpIds = new HashSet<>(matchedCurpDto.getMatchedCurpIds());
+            Set<String> duplicates = new HashSet<>(existingMatchedCurpIds);
+            duplicates.retainAll(newMatchedCurpIds);
+            if (!duplicates.isEmpty()) {
+                LOGGER.info("MatchedCurpIds already exist: " + duplicates);
             }
-            MatchedCurp matchedCurp = matchedCurpService.findCurpId(matchedCurpDto.getCurpId());
-            MatchedCurp matchedCurpId = matchedCurpService.findMatchedCurpId(matchedCurpDto.getMatchedCurpIds());
-            if(matchedCurpId!=null){
-                LOGGER.info("matched curpId is already exists: "+matchedCurpId.getMatchedCurpIds());
+            existingMatchedCurpIds.addAll(newMatchedCurpIds);
+            matchedCurp.setMatchedCurpIds(new ArrayList<>(existingMatchedCurpIds));
+            String matchedUpdateResponse = matchedCurpService.updateMatchedCurp(matchedCurp);
+            if (!matchedUpdateResponse.equals("MatchedCurp updated successfully")) {
+                return matchedUpdateResponse;
             }
-        else if (matchedCurp != null) {
-                String updatedMatchedCurpIds = matchedCurp.getMatchedCurpIds() + "," + matchedCurpDto.getMatchedCurpIds();
-                matchedCurp.setMatchedCurpIds(updatedMatchedCurpIds);
-                String matchedUpdateResponse = matchedCurpService.updateMatchedCurp(matchedCurp);
-                if (!matchedUpdateResponse.equals("MatchedCurp updated successfully")) {
-                    return matchedUpdateResponse;
-                }
-            } else {
-                MatchedCurp newMatchedCurp = new MatchedCurp();
-                newMatchedCurp.setCurpId(matchedCurpDto.getCurpId());
-                newMatchedCurp.setMatchedCurpIds(matchedCurpDto.getMatchedCurpIds());
-                newMatchedCurp.setStatusCode(matchedCurpDto.getStatusCode());
-                newMatchedCurp.setStatusComment(matchedCurpDto.getStatusComment());
-                newMatchedCurp.setCreatedBy("TEST_USER");
-                newMatchedCurp.setCreatedDateTime(DateUtils.getUTCCurrentDateTime());
+        } else {
+            MatchedCurp newMatchedCurp = new MatchedCurp();
+            newMatchedCurp.setCurpId(matchedCurpDto.getCurpId());
+            newMatchedCurp.setMatchedCurpIds(new ArrayList<>(matchedCurpDto.getMatchedCurpIds()));
+            newMatchedCurp.setStatusCode(matchedCurpDto.getStatusCode());
+            newMatchedCurp.setStatusComment(matchedCurpDto.getStatusComment());
+            newMatchedCurp.setCreatedBy("TEST_USER");
+            newMatchedCurp.setCreatedDateTime(DateUtils.getUTCCurrentDateTime());
 
-                String matchedSaveResponse = matchedCurpService.saveMatchedCurp(newMatchedCurp);
-                if (!matchedSaveResponse.equals("MatchedCurp saved successfully")) {
-                    return matchedSaveResponse;
-                }
+            String matchedSaveResponse = matchedCurpService.saveMatchedCurp(newMatchedCurp);
+            if (!matchedSaveResponse.equals("MatchedCurp saved successfully")) {
+                return matchedSaveResponse;
             }
-            return "CurpBioData and MatchedCurp updated successfully";
+        }
+        return "CurpBioData and MatchedCurp updated successfully";
     }
 
     public String findAndUpdateCurpStatus(String curpId, String curpType) {

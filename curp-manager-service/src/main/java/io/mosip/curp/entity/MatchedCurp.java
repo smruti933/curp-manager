@@ -7,6 +7,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -45,4 +47,12 @@ public class MatchedCurp {
     @Column(name = "upd_dtimes")
     private LocalDateTime updatedDateTime;
 
+ public void setMatchedCurpIds(List<String> matchedCurpIds) {
+  this.matchedCurpIds = String.join(",", matchedCurpIds);
+ }
+ public List<String> getMatchedCurpIds() {
+  return Arrays.asList(matchedCurpIds.split(","));
+ }
 }
+
+
