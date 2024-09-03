@@ -25,6 +25,10 @@ public class CurpBioHelper {
 
     public String updateCurpBioData(MatchedCurpDto matchedCurpDto) {
         CurpBioData curpBioData = curpService.findCurpBioDataById(matchedCurpDto.getCurpId());
+        if (curpBioData == null) {
+            LOGGER.info("Curp data not found for the given id: " + matchedCurpDto.getCurpId());
+            return "Curp data not found for the given id: " + matchedCurpDto.getCurpId();
+        }
         LOGGER.info("Updating CurpBioData for curpId: " + matchedCurpDto.getCurpId());
         curpBioData.setCurpStatus(matchedCurpDto.getCurpStatus());
         curpBioData.setStatusComment(matchedCurpDto.getStatusComment());
@@ -55,7 +59,7 @@ public class CurpBioHelper {
             newMatchedCurp.setMatchedCurpIds(new ArrayList<>(matchedCurpDto.getMatchedCurpIds()));
             newMatchedCurp.setStatusCode(matchedCurpDto.getStatusCode());
             newMatchedCurp.setStatusComment(matchedCurpDto.getStatusComment());
-            newMatchedCurp.setCreatedBy("TEST_USER");
+            newMatchedCurp.setCreatedBy("SYSTEM");
             newMatchedCurp.setCreatedDateTime(DateUtils.getUTCCurrentDateTime());
 
             String matchedSaveResponse = matchedCurpService.saveMatchedCurp(newMatchedCurp);
@@ -71,15 +75,11 @@ public class CurpBioHelper {
         Optional<CurpBioData> curpBioDataOptional = curpService.findCurpBioDataByIdAndType(curpId, curpType);
         if (curpBioDataOptional.isPresent()) {
             CurpBioData curpBioData = curpBioDataOptional.get();
-            if ("NEW".equalsIgnoreCase(curpBioData.getCurpType())) {
-                curpBioData.setCurpStatus("PROCESSED");
-                curpBioData.setCrBy("SYSTEM");
-                curpBioData.setUpdDtimes(DateUtils.getUTCCurrentDateTime());
-                curpService.updateCurpBioData(curpBioData);
-                return "CurpBioData status updated to PROCESSED for curpId: " + curpId;
-            } else {
-                return "CurpBioData curpType is not 'NEW', no update made for curpId: " + curpId;
-            }
+            curpBioData.setCurpStatus("PROCESSED");
+            curpBioData.setUpdBy("MOSIP_SYSTEM");
+            curpBioData.setUpdDtimes(DateUtils.getUTCCurrentDateTime());
+            curpService.updateCurpBioData(curpBioData);
+            return "CurpBioData status updated to PROCESSED for curpId: " + curpId;
         } else {
             return "CurpBioData not found for curpId: " + curpId + " and curpType: " + curpType;
         }

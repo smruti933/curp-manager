@@ -31,6 +31,7 @@ public class CurpBioController {
     public String updateCurpStatus(
             @PathVariable("curpId") String curpId,
             @PathVariable("curpType") String curpType) {
+
         return curpBioHelper.findAndUpdateCurpStatus(curpId, curpType);
     }
 

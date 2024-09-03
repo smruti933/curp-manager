@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
-import java.util.logging.Level;
-
 @Component
 public class MatchedCurpService {
 
@@ -45,7 +43,6 @@ public class MatchedCurpService {
     }
 
     public MatchedCurp findMatchedCurpId(String matchedCurpIds) {
-        MatchedCurp matchedCurpId = matchedCurpRepository.findByMatchedCurpIds(matchedCurpIds);
-            return matchedCurpId;
+        return matchedCurpRepository.findByMatchedCurpIds(matchedCurpIds);
     }
 }
