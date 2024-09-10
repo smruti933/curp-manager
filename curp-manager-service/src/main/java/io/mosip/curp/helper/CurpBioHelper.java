@@ -32,6 +32,7 @@ public class CurpBioHelper {
         LOGGER.info("Updating CurpBioData for curpId: " + matchedCurpDto.getCurpId());
         curpBioData.setCurpStatus(matchedCurpDto.getCurpStatus());
         curpBioData.setStatusComment(matchedCurpDto.getStatusComment());
+        curpBioData.setUpdBy("MOSIP_SYSTEM");
         curpBioData.setUpdDtimes(DateUtils.getUTCCurrentDateTime());
 
         String updateResponse = curpService.updateCurpBioData(curpBioData);
