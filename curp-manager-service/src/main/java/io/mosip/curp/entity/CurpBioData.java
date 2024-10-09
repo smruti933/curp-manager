@@ -31,9 +31,6 @@ public class CurpBioData {
     @Column(name = "bio_filepath")
     private String bioFilepath;
 
-    @Column(name = "status_code", length = 20, nullable = false)
-    private String statusCode;
-
     @Column(name = "status_comment", length = 256)
     private String statusComment;
 
