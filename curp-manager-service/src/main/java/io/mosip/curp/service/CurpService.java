@@ -30,10 +30,9 @@ public class CurpService {
         }
     }
 
-    public CurpBioData findCurpBioDataById(String curp_id) {
+    public Optional<CurpBioData> findCurpBioDataById(String curp_id) {
 
-        Optional<CurpBioData> curpId = curpBioDataRepository.findByCurpId(curp_id);
-        return curpId.orElse(null);
+        return curpBioDataRepository.findByCurpId(curp_id);
     }
 
     public Optional<CurpBioData> findCurpBioDataByIdAndType(String curpId, String curpType) {

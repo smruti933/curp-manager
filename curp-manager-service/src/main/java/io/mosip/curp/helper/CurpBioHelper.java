@@ -1,9 +1,11 @@
 package io.mosip.curp.helper;
+
 import io.mosip.curp.dto.MatchedCurpDto;
 import io.mosip.curp.entity.CurpBioData;
 import io.mosip.curp.entity.MatchedCurp;
 import io.mosip.curp.service.CurpService;
 import io.mosip.curp.service.MatchedCurpService;
+import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.kernel.core.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,11 +14,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.logging.Logger;
 
 @Component
 public class CurpBioHelper {
-    private static final Logger LOGGER = Logger.getLogger(CurpBioHelper.class.getName());
+
+    private static final Logger LOGGER = CurpManagerLogger.getLogger(CurpBioHelper.class);
+
     @Autowired
     private CurpService curpService;
 
@@ -24,14 +27,16 @@ public class CurpBioHelper {
     private MatchedCurpService matchedCurpService;
 
     public String updateCurpBioData(MatchedCurpDto matchedCurpDto) {
-        CurpBioData curpBioData = curpService.findCurpBioDataById(matchedCurpDto.getCurpId());
-        if (curpBioData == null) {
-            LOGGER.info("Curp data not found for the given id: " + matchedCurpDto.getCurpId());
+
+        Optional<CurpBioData> curpBioDataOptional = curpService.findCurpBioDataById(matchedCurpDto.getCurpId());
+        if (!curpBioDataOptional.isPresent()) {
+            LOGGER.info("Curp data not found for the given id: {}", matchedCurpDto.getCurpId());
             return "Curp data not found for the given id: " + matchedCurpDto.getCurpId();
         }
         LOGGER.info("Updating CurpBioData for curpId: " + matchedCurpDto.getCurpId());
+        CurpBioData curpBioData = curpBioDataOptional.get();
         curpBioData.setCurpStatus(matchedCurpDto.getCurpStatus());
-        curpBioData.setStatusComment(matchedCurpDto.getStatusComment());
+        curpBioData.setIsLatestBio(matchedCurpDto.isLatestBio());
         curpBioData.setUpdBy("MOSIP_SYSTEM");
         curpBioData.setUpdDtimes(DateUtils.getUTCCurrentDateTime());
 
@@ -71,12 +76,12 @@ public class CurpBioHelper {
         return "CurpBioData and MatchedCurp updated successfully";
     }
 
-    public String findAndUpdateCurpStatus(String curpId, String curpType) {
+    public String findAndUpdateCurpStatus(String curpId, String curpType, String status) {
 
         Optional<CurpBioData> curpBioDataOptional = curpService.findCurpBioDataByIdAndType(curpId, curpType);
         if (curpBioDataOptional.isPresent()) {
             CurpBioData curpBioData = curpBioDataOptional.get();
-            curpBioData.setCurpStatus("PROCESSED");
+            curpBioData.setCurpStatus(status);
             curpBioData.setUpdBy("MOSIP_SYSTEM");
             curpBioData.setUpdDtimes(DateUtils.getUTCCurrentDateTime());
             curpService.updateCurpBioData(curpBioData);

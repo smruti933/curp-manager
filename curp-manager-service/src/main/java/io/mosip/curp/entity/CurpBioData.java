@@ -31,21 +31,21 @@ public class CurpBioData {
     @Column(name = "bio_filepath")
     private String bioFilepath;
 
-    @Column(name = "status_comment", length = 256)
-    private String statusComment;
+    @Column(name = "is_latest_bio")
+    private Boolean isLatestBio;
 
-    @Column(name = "cr_by", length = 256)
+    @Column(name = "cr_by")
     private String crBy;
 
     @Column(name = "cr_dtimes", nullable = false)
     private LocalDateTime crDtimes;
 
-    @Column(name = "upd_by", length = 256)
+    @Column(name = "upd_by")
     private String updBy;
 
     @Column(name = "upd_dtimes")
     private LocalDateTime updDtimes;
 
-    @Column(name = "status", length = 255)
+    @Column(name = "status")
     private String curpStatus;
 }
