@@ -81,7 +81,7 @@ public class CurpBioHelper {
         Optional<CurpBioData> curpBioDataOptional = curpService.findCurpBioDataByIdAndType(matchedCurpDto.getCurpId(), matchedCurpDto.getCurpType());
         if (curpBioDataOptional.isPresent()) {
             CurpBioData curpBioData = curpBioDataOptional.get();
-            curpBioData.setCurpStatus(matchedCurpDto.getStatusCode());
+            curpBioData.setCurpStatus(matchedCurpDto.getCurpStatus());
             curpBioData.setUpdBy("MOSIP_SYSTEM");
             curpBioData.setUpdDtimes(DateUtils.getUTCCurrentDateTime());
             curpService.updateCurpBioData(curpBioData);
