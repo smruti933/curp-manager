@@ -84,6 +84,7 @@ public class CurpBioHelper {
             curpBioData.setCurpStatus(matchedCurpDto.getCurpStatus());
             curpBioData.setUpdBy("MOSIP_SYSTEM");
             curpBioData.setUpdDtimes(DateUtils.getUTCCurrentDateTime());
+            curpBioData.setIsLatestBio(matchedCurpDto.isLatestBio());
             curpService.updateCurpBioData(curpBioData);
             return "CurpBioData status updated to PROCESSED for curpId: " + matchedCurpDto.getCurpId();
         } else {
