@@ -16,5 +16,5 @@ public class MatchedCurpDto {
     private String curpType;
     private String statusComment;
     private String curpStatus;
-    private boolean isLatestBio;
+    private Boolean isLatestBio;
 }
