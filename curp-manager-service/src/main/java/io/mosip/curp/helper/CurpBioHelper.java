@@ -76,18 +76,18 @@ public class CurpBioHelper {
         return "CurpBioData and MatchedCurp updated successfully";
     }
 
-    public String findAndUpdateCurpStatus(String curpId, String curpType, String status) {
+    public String findAndUpdateCurpStatus(MatchedCurpDto matchedCurpDto) {
 
-        Optional<CurpBioData> curpBioDataOptional = curpService.findCurpBioDataByIdAndType(curpId, curpType);
+        Optional<CurpBioData> curpBioDataOptional = curpService.findCurpBioDataByIdAndType(matchedCurpDto.getCurpId(), matchedCurpDto.getCurpType());
         if (curpBioDataOptional.isPresent()) {
             CurpBioData curpBioData = curpBioDataOptional.get();
-            curpBioData.setCurpStatus(status);
+            curpBioData.setCurpStatus(matchedCurpDto.getStatusCode());
             curpBioData.setUpdBy("MOSIP_SYSTEM");
             curpBioData.setUpdDtimes(DateUtils.getUTCCurrentDateTime());
             curpService.updateCurpBioData(curpBioData);
-            return "CurpBioData status updated to PROCESSED for curpId: " + curpId;
+            return "CurpBioData status updated to PROCESSED for curpId: " + matchedCurpDto.getCurpId();
         } else {
-            return "CurpBioData not found for curpId: " + curpId + " and curpType: " + curpType;
+            return "CurpBioData not found for curpId: " + matchedCurpDto.getCurpId() + " and curpType: " + matchedCurpDto.getCurpType();
         }
     }
 }

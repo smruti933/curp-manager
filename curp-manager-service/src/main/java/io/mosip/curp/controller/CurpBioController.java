@@ -32,11 +32,10 @@ public class CurpBioController {
         }
     }
 
-    @PatchMapping("/updatestatus/{curpId}/{curpType}/{status}")
-    public String updateCurpStatus(@PathVariable("curpId") String curpId,
-                                   @PathVariable("curpType") String curpType, @PathVariable("status") String status) {
+    @PostMapping("/updatestatus")
+    public String updateCurpStatus(@RequestBody @Valid MatchedCurpDto matchedCurpDto) {
         LOGGER.info("CurpBioController::updateCurpStatus entry");
-        return curpBioHelper.findAndUpdateCurpStatus(curpId, curpType, status);
+        return curpBioHelper.findAndUpdateCurpStatus(matchedCurpDto);
     }
 
 }

@@ -13,6 +13,7 @@ public class MatchedCurpDto {
     private String curpId;
     private List<String> matchedCurpIds;
     private String statusCode;
+    private String curpType;
     private String statusComment;
     private String curpStatus;
     private boolean isLatestBio;
