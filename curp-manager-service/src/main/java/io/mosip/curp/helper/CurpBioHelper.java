@@ -36,7 +36,6 @@ public class CurpBioHelper {
         LOGGER.info("Updating CurpBioData for curpId: " + matchedCurpDto.getCurpId());
         CurpBioData curpBioData = curpBioDataOptional.get();
         curpBioData.setCurpStatus(matchedCurpDto.getCurpStatus());
-        curpBioData.setIsLatestBio(matchedCurpDto.getIsLatestBio());
         curpBioData.setUpdBy("MOSIP_SYSTEM");
         curpBioData.setUpdDtimes(DateUtils.getUTCCurrentDateTime());
 
@@ -55,6 +54,7 @@ public class CurpBioHelper {
             }
             existingMatchedCurpIds.addAll(newMatchedCurpIds);
             matchedCurp.setMatchedCurpIds(new ArrayList<>(existingMatchedCurpIds));
+            matchedCurp.setIsLatestBio(matchedCurpDto.getIsLatestBio());
             String matchedUpdateResponse = matchedCurpService.updateMatchedCurp(matchedCurp);
             if (!matchedUpdateResponse.equals("MatchedCurp updated successfully")) {
                 return matchedUpdateResponse;
@@ -63,6 +63,7 @@ public class CurpBioHelper {
             MatchedCurp newMatchedCurp = new MatchedCurp();
             newMatchedCurp.setCurpId(matchedCurpDto.getCurpId());
             newMatchedCurp.setMatchedCurpIds(new ArrayList<>(matchedCurpDto.getMatchedCurpIds()));
+            newMatchedCurp.setIsLatestBio(matchedCurpDto.getIsLatestBio());
             newMatchedCurp.setStatusCode(matchedCurpDto.getStatusCode());
             newMatchedCurp.setStatusComment(matchedCurpDto.getStatusComment());
             newMatchedCurp.setCreatedBy("SYSTEM");
@@ -84,7 +85,6 @@ public class CurpBioHelper {
             curpBioData.setCurpStatus(matchedCurpDto.getCurpStatus());
             curpBioData.setUpdBy("MOSIP_SYSTEM");
             curpBioData.setUpdDtimes(DateUtils.getUTCCurrentDateTime());
-            curpBioData.setIsLatestBio(matchedCurpDto.getIsLatestBio());
             curpService.updateCurpBioData(curpBioData);
             return "CurpBioData status updated to PROCESSED for curpId: " + matchedCurpDto.getCurpId();
         } else {

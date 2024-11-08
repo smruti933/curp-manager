@@ -31,9 +31,6 @@ public class CurpBioData {
     @Column(name = "bio_filepath")
     private String bioFilepath;
 
-    @Column(name = "is_latest_bio")
-    private Boolean isLatestBio;
-
     @Column(name = "cr_by")
     private String crBy;
 

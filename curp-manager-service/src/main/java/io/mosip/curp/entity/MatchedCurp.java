@@ -14,11 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "matched_curp",schema = "curp")
+@Table(name = "matched_curp", schema = "curp")
 public class MatchedCurp {
-   @Id
-   @GeneratedValue(generator = "UUID")
-   @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
     @Column(name = "curp_id")
@@ -26,7 +26,7 @@ public class MatchedCurp {
 
 
     @Column(name = "matched_curp_ids")
-     private String matchedCurpIds;
+    private String matchedCurpIds;
 
 
     @Column(name = "status_code")
@@ -34,6 +34,9 @@ public class MatchedCurp {
 
     @Column(name = "status_comment")
     private String statusComment;
+
+    @Column(name = "is_latest_bio")
+    private Boolean isLatestBio;
 
     @Column(name = "cr_by")
     private String createdBy;
@@ -47,12 +50,13 @@ public class MatchedCurp {
     @Column(name = "upd_dtimes")
     private LocalDateTime updatedDateTime;
 
- public void setMatchedCurpIds(List<String> matchedCurpIds) {
-  this.matchedCurpIds = String.join(",", matchedCurpIds);
- }
- public List<String> getMatchedCurpIds() {
-  return Arrays.asList(matchedCurpIds.split(","));
- }
+    public List<String> getMatchedCurpIds() {
+        return Arrays.asList(matchedCurpIds.split(","));
+    }
+
+    public void setMatchedCurpIds(List<String> matchedCurpIds) {
+        this.matchedCurpIds = String.join(",", matchedCurpIds);
+    }
 }
 
 
